@@ -1,0 +1,25 @@
+{
+    "name": "mk4u/http",
+    "description": "Small HTTP library",
+    "type": "library",
+    "require": {
+        "php": ">=8.2",
+        "ext-curl": "*"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^7.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Mk4U\\Http\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "alexsandrov16",
+            "email": "al3x5.dev@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}

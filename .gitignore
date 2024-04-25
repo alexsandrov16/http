@@ -1,3 +1,6 @@
 /vendor/
 index.php
 .htaccess
+
+# Fichero dentro de src/
+src/Stream.php

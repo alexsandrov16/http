@@ -33,7 +33,7 @@ class Response
 
     use Headers;
 
-    public function __construct(mixed $content = "", HttpStatus|array $status = HttpStatus::Ok, array $headers = [], string $version = null)
+    public function __construct(mixed $content = "", Status|array $status = Status::Ok, array $headers = [], string $version = null)
     {
 
         //version protocolo
@@ -108,7 +108,7 @@ class Response
         }
 
         $this->code = $code;
-        $this->phrase = empty($reasonPhrase) ? HttpStatus::phrase($code) : $reasonPhrase;
+        $this->phrase = empty($reasonPhrase) ? Status::phrase($code) : $reasonPhrase;
 
         return clone $this;
     }
@@ -165,7 +165,7 @@ class Response
     /**
      * Devuelve cuerpo del mensaje como JSON
      */
-    public static function json(array|object $content, HttpStatus|array $status = HttpStatus::Ok, array $headers = []): Response
+    public static function json(array|object $content, Status|array $status = Status::Ok, array $headers = []): Response
     {
         $headers['content-type'] = 'application/json';
         return new static(json_encode($content, JSON_PRETTY_PRINT), $status, $headers);
@@ -174,7 +174,7 @@ class Response
     /**
      * Devuelve cuerpo del mensaje como texto plano
      */
-    public static function plain(string $content, HttpStatus|array $status = HttpStatus::Ok, array $headers = []): Response
+    public static function plain(string $content, Status|array $status = Status::Ok, array $headers = []): Response
     {
         $headers['content-type'] = 'text/plain';
         return new static($content, $status, $headers);
@@ -183,7 +183,7 @@ class Response
     /**
      * Devuelve cuerpo del mensaje como HTML
      */
-    public static function html(string $content, HttpStatus|array $status = HttpStatus::Ok, array $headers = []): Response
+    public static function html(string $content, Status|array $status = Status::Ok, array $headers = []): Response
     {
         $headers['content-type'] = 'text/html';
         return new static($content, $status, $headers);

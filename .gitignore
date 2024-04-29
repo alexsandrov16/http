@@ -4,3 +4,4 @@ index.php
 
 # Fichero dentro de src/
 src/Stream.php
+src/Client.php

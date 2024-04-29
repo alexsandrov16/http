@@ -207,7 +207,7 @@ class Request
      * 
      * Tenga en cuenta que funciona para todas las solicitudes con una cadena de consulta.
      **/
-    public function getData(?string $name = null, mixed $default = null): mixed
+    public function queryData(?string $name = null, mixed $default = null): mixed
     {
         return $this->params($_GET, $name, $default);
     }

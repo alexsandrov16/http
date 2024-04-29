@@ -2,7 +2,7 @@
 
 namespace Mk4U\Http;
 
-enum HttpStatus: int
+enum Status: int
 {
         //1xx: Informational - Request received, continuing process
     case Continue                      = 100; //[RFC-ietf-httpbis-semantics, Section 15.2.1]

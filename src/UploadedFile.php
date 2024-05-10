@@ -2,6 +2,9 @@
 
 namespace Mk4U\Http;
 
+use InvalidArgumentException;
+use RuntimeException;
+
 /**
  * Uploaded File class
  */
@@ -11,7 +14,7 @@ class UploadedFile
     public function __construct(
         private ?string $name = null,
         private ?string $type = null,
-        private string $tmp_name,
+        public string $tmp_name,
         private int $error,
         private ?int $size
     ) {
@@ -55,6 +58,15 @@ class UploadedFile
      */
     public function moveTo(string $targetPath): void
     {
+        if($this->uploadOk()){
+            throw new RuntimeException("Error Processing Request", 1);
+        }
+
+        if (empty($targetPath)) {
+            throw new InvalidArgumentException('Ruta no válida proporcionada para la operación de traslado; debe ser una cadena no vacía');
+            
+        }
+
         move_uploaded_file($this->tmp_name, "$targetPath/{$this->getFilename()}");
     }
 
@@ -101,6 +113,21 @@ class UploadedFile
     }
 
     /**
+     * Establece un nuevo nombre de archivo.
+     *
+     * No confíe en el valor devuelto por este método. Un cliente podría enviar
+     * un nombre de archivo malicioso con la intención de corromper o hackear su
+     * aplicación.
+     *
+     * Las implementaciones DEBERÍAN devolver el valor almacenado en la clave "name" de
+     * el archivo en el array $_FILES.
+     */
+    public function setFilename(string $filename): void
+    {
+        $this->name=$filename;
+    }
+
+    /**
      * Recupera el tipo de medio enviado por el cliente.
      *
      * No confíe en el valor devuelto por este método. Un cliente podría enviar
@@ -116,5 +143,13 @@ class UploadedFile
     public function getMediaType(): ?string
     {
         return $this->type;
+    }
+
+    /**
+     * Verifica si el fichero se cargo correctamente
+     */
+    public function uploadOk(): bool
+    {
+        return $this->error === UPLOAD_ERR_OK;
     }
 }

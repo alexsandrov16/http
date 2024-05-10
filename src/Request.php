@@ -164,8 +164,14 @@ class Request
      **/
     private function getContent(): void
     {
+        //contenido
         if (in_array($this->getMethod(), ['PUT', 'DELETE', 'PATCH'])) {
             $this->content = file_get_contents('php://input');
+        }
+
+        //archivos
+        if ($this->isFormData() && $_FILES) {
+            $this->normalizeFiles($_FILES);
         }
     }
 
@@ -237,7 +243,7 @@ class Request
     }
 
     /**
-     * Devuelve JSON deserializado
+     * Devuelve JSON decodificado
      **/
     public function jsonData(bool $assoc = true): array|object|null
     {
@@ -253,5 +259,52 @@ class Request
     public function rawData(): ?string
     {
         return $this->content;
+    }
+
+    /**
+     * Obtiene ficheros subidos al servidor
+     */
+    public function files(): array
+    {
+        return $this->files ??  [];
+    }
+
+    /**
+     * Crea una instancia del objeto UploadedFile
+     */
+    private static function createUploadedFile(array $value): UploadedFile
+    {
+        return new UploadedFile(
+            $value["name"],
+            $value["type"],
+            $value["tmp_name"],
+            $value["error"],
+            $value["size"]
+        );
+    }
+
+    /**
+     * Normaliza archivos enviados por $_FILES
+     */
+    private function normalizeFiles(array $uploadFiles): void
+    {
+        //archivos
+        foreach ($uploadFiles as $key => $file) {
+            if (is_array($file['name'])) {
+                foreach ($file['name'] as $i => $name) {
+                    $this->files[$key][] = self::createUploadedFile(
+                        [
+                            'name'     => $file['name'][$i]      ?? null,
+                            'type'     => $file['type'][$i]      ?? null,
+                            'tmp_name' => $file['tmp_name'][$i]  ?? null,
+                            'error'    => $file['error'][$i]     ?? null,
+                            'size'     => $file['size'][$i]      ?? null,
+                        ]
+                    );
+                }
+            } else {
+                $this->files[$key] = self::createUploadedFile($file);
+            }
+        }
     }
 }

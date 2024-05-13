@@ -7,7 +7,7 @@
         "ext-curl": "*"
     },
     "require-dev": {
-        "symfony/var-dumper": "^7.0"
+        "symfony/var-dumper": "*"
     },
     "license": "MIT",
     "autoload": {

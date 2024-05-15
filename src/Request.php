@@ -165,7 +165,10 @@ class Request
     private function getContent(): void
     {
         //contenido
-        if (in_array($this->getMethod(), ['PUT', 'DELETE', 'PATCH'])) {
+        if (in_array($this->getMethod(),['PUT', 'DELETE', 'PATCH'])
+            ||
+            ($this->hasMethod('POST') && $this->isFormData() === false)
+        ) {
             $this->content = file_get_contents('php://input');
         }
 

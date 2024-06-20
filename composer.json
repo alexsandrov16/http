@@ -4,7 +4,8 @@
     "type": "library",
     "require": {
         "php": ">=8.2",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "ralouphie/getallheaders": "^3.0"
     },
     "require-dev": {
         "symfony/var-dumper": "*"

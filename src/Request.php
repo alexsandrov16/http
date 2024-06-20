@@ -49,7 +49,7 @@ class Request
         );
 
         //Headers
-        $this->headers();
+        $this->setHeaders(getallheaders());
 
         //Content
         $this->getContent();
@@ -75,29 +75,6 @@ class Request
     public static function server(string $index = ''): array|string
     {
         return empty($index) ? $_SERVER : (empty($_SERVER[strtoupper($index)]) ? '' : $_SERVER[strtoupper($index)]);
-    }
-
-    /**
-     * Establecer cabeceras de la solicitud HTTP.
-     **/
-    private function headers(): void
-    {
-        $headers = [];
-        if (function_exists('getallheaders')) {
-            $headers = getallheaders();
-        } else {
-            foreach ($this->server() as $name => $value) {
-                if (preg_match('/^HTTP_/', $name)) {
-                    $headers[str_replace('HTTP_', '', $name)] = $value;
-                }
-
-                if (in_array($name, ['CONTENT_TYPE', 'CONTENT_LENGTH', 'CONTENT_MD5'], true)) {
-                    $headers[$name] = $value;
-                }
-            }
-        }
-
-        $this->setHeaders($headers);
     }
 
     /**

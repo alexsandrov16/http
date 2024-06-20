@@ -165,7 +165,8 @@ class Request
     private function getContent(): void
     {
         //contenido
-        if (in_array($this->getMethod(),['PUT', 'DELETE', 'PATCH'])
+        if (
+            in_array($this->getMethod(), ['PUT', 'DELETE', 'PATCH'])
             ||
             ($this->hasMethod('POST') && $this->isFormData() === false)
         ) {
@@ -251,7 +252,7 @@ class Request
     public function jsonData(bool $assoc = true): array|object|null
     {
         if ($this->getHeader('content-type') == 'application/json') {
-            return json_decode($this->content, $assoc);
+            return json_decode($this->content, $assoc, flags: JSON_THROW_ON_ERROR);
         }
         return null;
     }

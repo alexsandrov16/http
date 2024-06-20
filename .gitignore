@@ -1,6 +1,7 @@
 /vendor/
 index.php
 .htaccess
+composer.lock
 
 # Fichero dentro de src/
 src/Stream.php

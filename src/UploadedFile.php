@@ -59,11 +59,11 @@ class UploadedFile
     public function moveTo(string $targetPath): void
     {
         if (!$this->uploadOk()) {
-            throw new RuntimeException("Error Processing Request", 1);
+            throw new RuntimeException("Ha ocurrid un error durante la operación de movimiento.");
         }
 
         if (empty($targetPath)) {
-            throw new InvalidArgumentException('Ruta no válida proporcionada para la operación de traslado; debe ser una cadena no vacía');
+            throw new InvalidArgumentException('Ruta no válida proporcionada para la operación de traslado, debe ser una cadena no vacía');
         }
 
         move_uploaded_file($this->tmp_name, "$targetPath/{$this->getFilename()}");

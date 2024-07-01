@@ -172,7 +172,7 @@ class Request
      * todos los valores del $params propiedad. Puede agregarle valores por defecto en caso de 
      * que $params[$name] no este definido.
      **/
-    private function params(array $params, ?string $name = null, mixed $default = null)
+    private function params(array $params, ?string $name = null, mixed $default = null): mixed
     {
         if (empty($name)) {
             return $params;

@@ -26,7 +26,7 @@ class Uri
         if ($uri !== '') {
             if (empty($parse = parse_url($uri))) {
                 //Unable to parse URI
-                throw new \InvalidArgumentException("No se puede analizar la URI: $uri");
+                throw new \InvalidArgumentException("Unable to parse URI");
             }
             $this->setParts($parse);
         }
@@ -83,7 +83,7 @@ class Uri
     public function setPort(?int $port = NULL): Uri
     {
         if (isset($port) && $port <= 0 || $port > 65535) {
-            throw new \InvalidArgumentException(sprintf('Puerto no válido: %d. Debe estar entre 0 y 65535', $port));
+            throw new \InvalidArgumentException(sprintf('Invalid port: %d. It must be between 0 and 65535', $port));
         }
         $this->port = $port;
 

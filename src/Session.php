@@ -41,7 +41,7 @@ class Session
             return $default;
         } else {
             if (self::has($name) === false) {
-                throw new RuntimeException(sprintf("No existe la session %s", $name));
+                throw new RuntimeException(sprintf("The session '%s' does not exist", $name));
             }
     
             return $_SESSION[$name];

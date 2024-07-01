@@ -40,7 +40,7 @@ class Cookie
             return $default;
         } else {
             if (self::has($name) == false) {
-                throw new RuntimeException(sprintf("No existe una cookie con el nombre '%s'", $name));
+                throw new RuntimeException(sprintf("The cookie %s does not exist", $name));
             }
 
             return $_COOKIE[$name];

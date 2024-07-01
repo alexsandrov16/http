@@ -104,7 +104,7 @@ class Response
     public function setStatus(int $code, string $reasonPhrase = ''):Response
     {
         if ($code < 100 || $code > 599) {
-            throw new \InvalidArgumentException("Argumentos de código de estado no válidos");
+            throw new \InvalidArgumentException("Invalid status code argumentss");
         }
 
         $this->code = $code;

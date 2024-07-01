@@ -225,7 +225,7 @@ enum Status: int
             self::LoopDetected->value                  => self::LoopDetected->message(),
             self::NotExtended->value                   => self::NotExtended->message(),
             self::NetworkAuthenticationRequired->value => self::NetworkAuthenticationRequired->message(),
-            default => throw new \InvalidArgumentException("Argumentos de código de estado no válidos")
+            default => throw new \InvalidArgumentException("Invalid status code arguments")
             
         };
     }

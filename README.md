@@ -9,4 +9,6 @@ This small library provides a simple and easy to use interface for creating, sen
 ## Installation
 The installation of this library can be done with Composer:
 
-```composer require mk4u/http```
+```bash
+composer require mk4u/http
+```

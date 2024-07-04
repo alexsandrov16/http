@@ -1,6 +1,7 @@
 # UploadedFile
-This class allows you to interact with files uploaded to the server.
+This `UploadedFile` class allows you to interact with files uploaded to the server.
 
+Creating a new UploadedFile object
 ```php
 $files=new Mk4U\Http\UploadedFile([
     $_FILES['myfile']['name'],

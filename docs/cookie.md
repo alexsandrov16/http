@@ -4,7 +4,7 @@ This `Cookie` class allows you to manage cookies in your application.
 ## Method `Cookie::set($name, $value, $expires, $path, $domain, $secure, $httponly)`.
 This static method adds a cookie before sending it to the browser with the specified parameters. Returns true if the cookie was set correctly, otherwise returns false.
 
-Parameters:
+**Parameters:**
 - `$name` (string): The name of the cookie.
 - `$value` (mixed): The value of the cookie.
 - `$expires` (int): The expiration time of the cookie in seconds from the current time. Default is 0 (does not expire).

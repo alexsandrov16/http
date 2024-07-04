@@ -13,7 +13,7 @@ $response->getHeaders();
 ## `getHeader`
 This method returns the value of a specific header.
 
-Parameters
+**Parameters:**
 - `$name` (string): The name of the header.
 
 ```php
@@ -34,7 +34,7 @@ $response->hasHeader($name);
 ## `setHeader`
 This method sets the value of a specific header.
 
-Parameters
+**Parameters:**
 - `$name` (string): The name of the header.
 - `$value` (string|array): The value of the header.
 
@@ -52,7 +52,7 @@ $response->setHeader($name, $value);
 ## `setHeaders`
 This method sets all the headers of the response.
 
-Parameters
+**Parameters:**
 - `$headers` (array): An associative array with the headers.
 
 ```php
@@ -68,7 +68,7 @@ $response->setHeaders($headers);
 ## `addHeader`
 This method adds a header to the response. If the header already exists, the value is added at the end.
 
-Parameters
+**Parameters:**
 - `$name` (string): The name of the header.
 - `$value` (string|array): The value of the header.
 
@@ -81,7 +81,7 @@ $response->addHeader($name, $value);
 ## `removeHeader`
 This method removes a header from the response.
 
-Parameters
+**Parameters:**
 - `$name` (string): The name of the header to remove.
 
 ```php

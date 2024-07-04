@@ -56,7 +56,7 @@ $response->getStatusCode();
 ## Method `Response::setStatus(int $code, string $reasonPhrase = '')`.
 This method sets the status code and optionally, the HTTP response reason phrase. The `InvalidArgumentException` is thrown if the status code is invalid.
 
-Parameters
+**Parameters:**
 - `$code` (int): The 3-digit status code to be set.
 - `$reasonPhrase` (string): The reason phrase to associate with the status code. If not provided, a default value can be used.
 
@@ -91,7 +91,7 @@ $response->setBody($content);
 ## Method `Response::json(array|object $content, Status|array $status = Status::Ok, array $headers = [])`.
 This method returns the message body in JSON format.
 
-Parameters
+**Parameters:**
 - `$content` (array|object): The content to be converted to JSON.
 - `$status` (Status|array): The status of the response (default is Ok).
 - `$headers` (array): The headers of the response.
@@ -103,7 +103,7 @@ $response->json('{"message":"Hello World!"}', $status, $headers);
 ## Method `Response::plain(string $content, Status|array $status = Status::Ok, array $headers = [])`.
 This method returns the message body in plain text format.
 
-Parameters
+**Parameters:**
 - `$content` (string): The content in plain text format.
 - `$status` (Status|array): The status of the response (default is Ok).
 - `$headers` (array): The headers of the response
@@ -115,7 +115,7 @@ $response->plain('Hello World!', $status, $headers);
 ## Method `Response::html(string $content, Status|array $status = Status::Ok, array $headers = [])`.
 Este método devuelve el cuerpo del mensaje en formato HTML.
 
-Parameters
+**Parameters:**
 - `$content` (string): The content in HTML format.
 - `$status` (Status|array): The status of the response (default is Ok).
 - `$headers` (array): The headers of the response

@@ -71,7 +71,7 @@ $request->getMethod();
 ## Method `Request::setUri($uri, $preserv_host = false)`.
 This method sets the [Uri](https://github.com/alexsandrov16/http/blob/main/docs/uri.md) object for the current request and optionally preserves the host in the request headers. Returns a copy of the Request object with the updated [Uri](https://github.com/alexsandrov16/http/blob/main/docs/uri.md) object and, optionally, the preserved host in the headers.
 
-Parameters:
+**Parameters:**
 - `$uri` (Uri): the [Uri](https://github.com/alexsandrov16/http/blob/main/docs/uri.md) object to set for the request.
 - `$preserv_host` (bool): Indicates whether to preserve the host in the request 
 ```php
@@ -97,7 +97,7 @@ $request->isFormData();
 ## Method `Request::queryData($name, $default)`.
 This method gets the query string parameters from the URI. If no parameter name is specified, it returns all values from the superglobal `$_GET`.
  
-Parameters:
+**Parameters:**
 - `$name` (string|null): the name of the parameter to fetch. Default is null.
 - `$default` (mixed): The default value to return if the parameter is not present. Defaults to null.
 ```php
@@ -117,7 +117,7 @@ $request->queryData('unavailable','value');
 ## Method `Request::inputData($name, $default)`.
 This method retrieves the parameters provided in the request body, depending on the content type and request method. Returns the parameters from the request body, either from `$_POST` or from the request body content.
 
-Parameters:
+**Parameters:**
 - `$name` (string|null): the name of the parameter to retrieve. Default is null.
 - `$default` (mixed): The default value to return if the parameter is not present. Defaults to null.
 ```php

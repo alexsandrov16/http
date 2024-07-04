@@ -19,7 +19,7 @@ $files=$request->files();
 ## Method `UploadedFile::moveTo(string $targetPath)`.
 This method moves the uploaded file to a new location
 
-Parameters:
+**Parameters:**
 - $targetPath (string): Path to which the uploaded file will be moved.
 
 For all the examples we will use the objects returned from the [Request::files()](https://github.com/alexsandrov16/http/blob/dev/docs/request.md#method-requestfiles) method.

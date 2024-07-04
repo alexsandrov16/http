@@ -67,10 +67,10 @@ $request->getMethod();
 ```
 
 ## Method `Request::setUri($uri, $preserv_host = false)`.
-This method sets the [Uri](https://github.com/alexsandrov16/http#Uri) object for the current request and optionally preserves the host in the request headers. Returns a copy of the Request object with the updated [Uri](https://github.com/alexsandrov16/http#Uri) object and, optionally, the preserved host in the headers.
+This method sets the [Uri](https://github.com/alexsandrov16/http/blob/main/docs/uri.md) object for the current request and optionally preserves the host in the request headers. Returns a copy of the Request object with the updated [Uri](https://github.com/alexsandrov16/http/blob/main/docs/uri.md) object and, optionally, the preserved host in the headers.
 
 Parameters:
-- `$uri` (Uri): the [Uri](https://github.com/alexsandrov16/http#Uri) object to set for the request.
+- `$uri` (Uri): the [Uri](https://github.com/alexsandrov16/http/blob/main/docs/uri.md) object to set for the request.
 - `$preserv_host` (bool): Indicates whether to preserve the host in the request 
 ```php
 $request->setUri($uri);
@@ -79,7 +79,7 @@ $request->setUri($uri,true);
 ```
 
 ## Method `Request::getUri()`.
-This method returns the [Uri](https://github.com/alexsandrov16/http#Uri) object associated with the current request.
+This method returns the [Uri](https://github.com/alexsandrov16/http/blob/main/docs/uri.md) object associated with the current request.
 ```php
 $request->getUri();
 // return object(Mk4U\Http\Uri)
@@ -156,7 +156,7 @@ $request->rawData();
 ```
 
 ## Method `Request::files()`.
-This method returns an array containing the files uploaded to the server in the current request stored in the [UploadedFile](https://github.com/alexsandrov16/http#UploadedFile) or an empty array if there are no files.
+This method returns an array containing the files uploaded to the server in the current request stored in the [UploadedFile](https://github.com/alexsandrov16/http/blob/main/docs/uploadedfile.md) or an empty array if there are no files.
 ```php
 $request->files();
 /* return [

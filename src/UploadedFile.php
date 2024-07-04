@@ -49,8 +49,8 @@ class UploadedFile
      * Si desea pasar a un flujo, utilice getStream(), ya que las operaciones SAPI
      * no pueden garantizar la escritura en destinos de flujo.
      *
-     * @ver http://php.net/is_uploaded_file
-     * Ver http://php.net/move_uploaded_file
+     * @see http://php.net/is_uploaded_file
+     * @see http://php.net/move_uploaded_file
      * @param string $targetPath Ruta a la que mover el fichero subido.
      * @throws \InvalidArgumentException si el $targetPath especificado no es válido.
      * @throws \RuntimeException en cualquier error durante la operación de mover, o en
@@ -88,7 +88,7 @@ class UploadedFile
      * Las implementaciones DEBERÍAN devolver el valor almacenado en la clave "error" de
      * el archivo en el array $_FILES.
      *
-     * @ver http://php.net/manual/en/features.file-upload.errors.php
+     * @see http://php.net/manual/en/features.file-upload.errors.php
      * @return int Una de las constantes UPLOAD_ERR_XXX de PHP.
      */
     public function getError(): int

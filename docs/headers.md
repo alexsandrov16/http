@@ -39,6 +39,11 @@ Parameters
 - `$value` (string|array): The value of the header.
 
 ```php
+$name='cache-control';
+$value= 'max-age=300, s-maxage=300';
+// or
+$value=['max-age=300', 's-maxage=300'];
+
 $request->setHeader($name, $value);
 // or
 $response->setHeader($name, $value);
@@ -51,6 +56,10 @@ Parameters
 - `$headers` (array): An associative array with the headers.
 
 ```php
+$headers=[
+    'content-type'=> 'text/html',
+    'cache-control'=> 'max-age=300, s-maxage=300'
+];
 $request->setHeaders($headers);
 // or
 $response->setHeaders($headers);

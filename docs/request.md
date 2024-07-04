@@ -1,7 +1,9 @@
 # Request
 The `Request` class allows you to interact with the data coming into your application.
 
-## Creating a new Request object
+## Usage
+
+Creating a new Request object
 ```php
 require __DIR__ . '/vendor/autoload.php';
 

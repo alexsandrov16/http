@@ -19,7 +19,7 @@ Cookie::set('hellophp','Hello PHP!',300,'/','localhost');
 ```
 
 ## Method `Cookie::get(?string $name = null, mixed $default = null)`.
-This static method gets the values of the cookies stored in `$_COOKIE`. It can get the value of a specified cookie, all cookies if no name is given, or the default value if the cookie does not exist.
+This static method gets the values of the cookies stored in `$_COOKIE`. It can get the value of a specific cookie, all cookies if no name is given, or the default value if the cookie does not exist.
 ```php
 Cookie::get('helloworld');
 // return "Hello World!"

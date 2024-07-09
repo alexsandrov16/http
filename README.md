@@ -30,7 +30,7 @@ For more details, please refer to the documentation:
 Your contributions are welcome! If you encounter any problems or have any improvements to suggest, please open an issue or send a pull request.
 
 ## License
-This project is licensed under the [MIT License](https://github.com/alexsandrov16/http/blob/main/LICENSE).
+This project is licensed under the [MIT License](https://github.com/alexsandrov16/http?tab=MIT-1-ov-file).
 
 ## Contact
 If you have any questions or comments, feel free to contact me at http://t.me/alexsadrov16

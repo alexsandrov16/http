@@ -188,4 +188,13 @@ class Response
         $headers['content-type'] = 'text/html';
         return new static($content, $status, $headers);
     }
+
+    /**
+     * Devuelve cuerpo del mensaje como XML
+     */
+    public static function xml(string $content, Status|array $status = Status::Ok, array $headers = []): Response
+    {
+        $headers['content-type'] = 'application/xml';
+        return new static($content, $status, $headers);
+    }
 }

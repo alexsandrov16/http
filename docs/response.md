@@ -113,7 +113,7 @@ $response->plain('Hello World!', $status, $headers);
 ```
 
 ## Method `Response::html(string $content, Status|array $status = Status::Ok, array $headers = [])`.
-Este método devuelve el cuerpo del mensaje en formato HTML.
+This method returns the message body in HTML format.
 
 **Parameters:**
 - `$content` (string): The content in HTML format.
@@ -121,5 +121,26 @@ Este método devuelve el cuerpo del mensaje en formato HTML.
 - `$headers` (array): The headers of the response
 
 ```php
-$response->plain('<h1>Hello World!</h1>', $status, $headers);
+$response->html('<h1>Hello World!</h1>', $status, $headers);
+```
+
+## Method `Response::xml(string $content, Status|array $status = Status::Ok, array $headers = [])`.
+This method returns the message body in XML format.
+
+**Parameters:**
+- `$content` (string): The content in XML format.
+- `$status` (Status|array): The status of the response (default is Ok).
+- `$headers` (array): The headers of the response
+
+```php
+$xml=<<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<note>
+  <to>Tove</to>
+  <from>Jani</from>
+  <heading>Reminder</heading>
+  <body>Don't forget me this weekend!</body>
+</note>
+XML;
+$response->xml($xml, $status, $headers);
 ```

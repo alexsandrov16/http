@@ -165,10 +165,13 @@ class Response
     /**
      * Devuelve cuerpo del mensaje como JSON
      */
-    public static function json(array|object $content, Status|array $status = Status::Ok, array $headers = []): Response
+    public static function json(array|string $content, Status|array $status = Status::Ok, array $headers = []): Response
     {
         $headers['content-type'] = 'application/json';
-        return new static(json_encode($content, JSON_PRETTY_PRINT), $status, $headers);
+        return new static(
+            is_string($content) ? $content : json_encode($content,JSON_PRETTY_PRINT),
+            $status,
+            $headers);
     }
 
     /**

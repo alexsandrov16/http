@@ -97,7 +97,7 @@ This method returns the message body in JSON format.
 - `$headers` (array): The headers of the response.
 
 ```php
-$response->json('{"message":"Hello World!"}', $status, $headers);
+Response::json('{"message":"Hello World!"}', $status, $headers);
 ```
 
 ## Method `Response::plain(string $content, Status|array $status = Status::Ok, array $headers = [])`.
@@ -109,7 +109,7 @@ This method returns the message body in plain text format.
 - `$headers` (array): The headers of the response
 
 ```php
-$response->plain('Hello World!', $status, $headers);
+Response::plain('Hello World!', $status, $headers);
 ```
 
 ## Method `Response::html(string $content, Status|array $status = Status::Ok, array $headers = [])`.
@@ -121,7 +121,7 @@ This method returns the message body in HTML format.
 - `$headers` (array): The headers of the response
 
 ```php
-$response->html('<h1>Hello World!</h1>', $status, $headers);
+Response::html('<h1>Hello World!</h1>', $status, $headers);
 ```
 
 ## Method `Response::xml(string $content, Status|array $status = Status::Ok, array $headers = [])`.
@@ -142,5 +142,5 @@ $xml=<<<XML
   <body>Don't forget me this weekend!</body>
 </note>
 XML;
-$response->xml($xml, $status, $headers);
+Response::xml($xml, $status, $headers);
 ```

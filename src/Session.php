@@ -2,61 +2,92 @@
 
 namespace Mk4U\Http;
 
-use RuntimeException;
+use Mk4U\Http\Session\Flash;
 
 /**
  * Session class
  */
 class Session
 {
+    private const CFG = [
+        "auto_start" => "boolean",
+        "cache_expire" => "integer",
+        "cache_limiter" => "string",
+        "cookie_domain" => "string",
+        "cookie_httponly" => "boolean",
+        "cookie_lifetime" => "integer",
+        "cookie_path" => "string ",
+        "cookie_samesite" => "string",
+        "cookie_secure" => "boolean",
+        "gc_divisor" => "integer",
+        "gc_maxlifetime" => "integer",
+        "gc_probability" => "integer",
+        "lazy_write" => "boolean",
+        "name" => "string",
+        "referer_check" => "string",
+        "save_handler" => "string",
+        "save_path" => "string",
+        "serialize_handler" => "string",
+        "sid_bits_per_character" => "integer",
+        "sid_length" => "integer",
+        "trans_sid_hosts" => "string",
+        "trans_sid_tags" => "string",
+        "use_cookies" => "boolean",
+        "use_only_cookies" => "boolean",
+        "use_strict_mode" => "boolean",
+        "use_trans_sid " => "boolean",
+    ];
+
+    use Flash;
+
     /**
      * Inicializa la session
      **/
-    public static function start()
+    public static function start(array $options = []): bool
     {
         if (session_status() !== PHP_SESSION_ACTIVE) {
+            if (!empty($options)) {
+                self::validate($options);
+                return session_start($options);
+            }
+
             return session_start([
                 "name" => "_mk4u_",
+                "use_cookies" => true,
                 "use_only_cookies" => true,
                 "cookie_lifetime" => 0,
-                "cookie_httponly"=> true,
-                "cookie_secure"=>true,
+                "cookie_httponly" => true,
+                "cookie_secure" => true,
                 "use_strict_mode" => true,
-                //"delete_old_session"=>true,
-                //'read_and_close'  => true,
             ]);
         }
+        return false;
     }
 
     /**
      * Devuelve el valor de $_SESSION
      */
-    public static function get(?string $name = null,mixed $default=null): mixed
+    public static function get(?string $name = null, mixed $default = null): mixed
     {
         if (is_null($name)) {
             return $_SESSION;
         }
 
-        if (isset($default)) {
-            return $default;
-        } else {
-            if (self::has($name) === false) {
-                throw new RuntimeException(sprintf("The session '%s' does not exist", $name));
-            }
-    
+        if (self::has($name)) {
             return $_SESSION[$name];
+        } else {
+            return $default;
         }
-        
     }
 
     /**
      * Establece valores para $_SESSION
      * 
-     * en caso de existir la session sobreescribe el valor
+     * En caso de existir la session sobreescribe el valor
      */
     public static function set(string $name, mixed $value): void
     {
-        $_SESSION[$name]=$value;
+        $_SESSION[$name] = $value;
     }
 
     /**
@@ -78,7 +109,7 @@ class Session
     /**
      * Genera un nuevo ID de session
      */
-    public static function renewId() : void
+    public static function renewId(): void
     {
         session_regenerate_id();
     }
@@ -86,7 +117,7 @@ class Session
     /**
      * Destruye la sesion con todos sus datos
      */
-    public static function destroy() : void
+    public static function destroy(): void
     {
         session_unset();
         session_destroy();
@@ -95,8 +126,38 @@ class Session
     /**
      * Devuelve el id de la session
      */
-    public static function id() : string
+    public static function id(): string
     {
         return session_id();
+    }
+
+    /**
+     * Validar opciones de inicio
+     */
+    private static function validate(array $options): void
+    {
+        foreach ($options as $key => $value) {
+            if (!array_key_exists($key, self::CFG)) {
+                throw new \RuntimeException(sprintf("'%s' is not a valid configuration parameter.", $key));
+            }
+
+            $expectedType = self::CFG[$key];
+            if (gettype($value) !== $expectedType) {
+
+                throw new \RuntimeException(sprintf("Expected data type '%s' for '%s,", $expectedType, $key));
+            }
+        }
+    }
+
+    // -------------- Flash Messages ---------------
+    /**
+     * Establece y muestra los flash message
+     */
+    public static function flash(string $name, mixed $value=null): ?string
+    {
+        if (empty($value)) {
+            return static::getflash($name);
+        }
+        return static::setflash($name, $value);
     }
 }

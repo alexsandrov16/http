@@ -2,14 +2,19 @@
 This `Session` class allows you to manage sessions in your application.
 
 ## Method `Session::start()`.
-This static method is responsible for initializing the session. Check if the session is already active.
-If the session is not active, log in with the following options:
+This static method is responsible for initializing the session. 
+
+By default this method initializes the session by setting the following options:
 - "name": "mk4u"
+- "use_cookies": true,
 - "use_only_cookies": true
 - "cookie_lifetime": 0
 - "cookie_httponly": true
 - "cookie_secure": true
 - "use_strict_mode": true 
+
+But you can change these values to suit your use case
+[read more 👀](https://www.php.net/manual/es/session.configuration.php)
 
 Returns true if the session is successfully started
 
@@ -29,7 +34,7 @@ Session::set('hello', 'Hello World!');
 ```
 
 ## Method `Session::get(?string $name = null, mixed $default = null)`.
-This static method retrieves the values stored in `$_SESSION`. It can return the value of a specific session or all values of `$_SESSION` if no name is provided. If the session name does not exist and no value is specified for `$default`, this method throws an exception of type `RuntimeException`; otherwise, it will return the default value.
+This static method retrieves the values stored in $_SESSION that match the name passed. It may return the value of the superglobal $_SESSION if a value for name is not provided. If the session name does not exist, this method returns the value of $default.
 
 **Parameters:**
 - `$name` (string|null): The name of the session variable to retrieve. Default is `null`.
@@ -48,7 +53,7 @@ Session::get('unavailable','value');
 // return "value"
 
 Session::get('unavailable');
-//Fatal error: Uncaught RuntimeException: The session 'unavailable' does not exist 
+//return null 
 ```
 
 ## Method `Session::has(string $name)`.
@@ -59,7 +64,7 @@ Session::has('hello');
 ```
 
 ## Method `Session::remove(string $name)`.
- This method deletes a specified session.
+This method deletes a specified session.
 
 ```php
 Session::remove('hello');
@@ -83,8 +88,40 @@ Session::id();
 ```
 
 ## Method `Session::destroy()`.
-Este método desestablece todas las variables de sesión y destruye la sesión
+This method deletes all session variables and destroys the session.
 
 ```php
 Session::destroy();
+```
+
+## Method `Session::delete(string $name)`.
+Alias to remove.
+
+```php
+Session::delete('hello');
+```
+
+## Method `Session::flash(string $name, mixed $value = null)`.
+This method sets a flash message in the session cookie, the data stored in the session using this method will be available immediately and during the subsequent HTTP request. After the subsequent HTTP request, the detailed data will be deleted.
+
+**Parameters:**
+- `$name` (string): The name of the message identifier to set.
+- `$value` (mixed): The value to assign to the flash message. Default is `null`.
+
+### Set a session message
+To store a flash message just call the `Session::flash()` method and pass the name and the message.
+
+```php
+Session::flash('message','Hello Word!!');
+```
+
+### Return a session message
+To return the message just call the `Session::flash()` method but this time just provide the name.
+
+> [!NOTE]
+> Remember that `Session::flash()` will only return the flash message once after that it is deleted.
+
+```php
+echo Session::flash('message');
+// Hello Word!!
 ```

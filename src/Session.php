@@ -99,6 +99,14 @@ class Session
     }
 
     /**
+     * Alias de Session::remove()
+     */
+    public static function delete(string $name): void
+    {
+        self::remove($name);
+    }
+
+    /**
      * Verifica si existe una session dada
      */
     public static function has(string $name): bool
@@ -153,7 +161,7 @@ class Session
     /**
      * Establece y muestra los flash message
      */
-    public static function flash(string $name, mixed $value=null): ?string
+    public static function flash(string $name, mixed $value = null): ?string
     {
         if (empty($value)) {
             return static::getflash($name);

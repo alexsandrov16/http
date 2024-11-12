@@ -178,11 +178,11 @@ class Request
             return $params;
         }
 
-        if (!isset($params[$name])) {
-            return $default;
+        if (isset($params[$name])) {
+            return $params[$name];
         }
 
-        return $params[$name];
+        return $default;
     }
 
     /**

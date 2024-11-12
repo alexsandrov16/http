@@ -13,8 +13,7 @@ By default this method initializes the session by setting the following options:
 - "cookie_secure": true
 - "use_strict_mode": true 
 
-But you can change these values to suit your use case
-[read more 👀](https://www.php.net/manual/es/session.configuration.php)
+But you can change these values to suit your use case; [read more 👀](https://www.php.net/manual/es/session.configuration.php)
 
 Returns true if the session is successfully started
 

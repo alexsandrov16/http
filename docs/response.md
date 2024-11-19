@@ -40,20 +40,20 @@ return $response->json(
   );
 ```
 
-## Returns information for object debugging.
+### Returns information for object debugging.
 The magic method `__debugInfo` returns an array with information about the HTTP response, including the protocol version, code, phrase, headers and body.
 ```php
 var_dump($response);
 ```
 
-## Method `Response::getStatusCode()`.
+### Method `Response::getStatusCode()`.
 This method returns the HTTP response status code.
 ```php
 $response->getStatusCode();
 // 200
 ```
 
-## Method `Response::setStatus(int $code, string $reasonPhrase = '')`.
+### Method `Response::setStatus(int $code, string $reasonPhrase = '')`.
 This method sets the status code and optionally, the HTTP response reason phrase. The `InvalidArgumentException` is thrown if the status code is invalid.
 
 **Parameters:**
@@ -66,7 +66,7 @@ $response->setStatus(200, 'OK');
 $response->setStatus(Mk4U\Http\Status::Ok->value);
 ```
 
-## Method `Response::getReasonPhrase()`.
+### Method `Response::getReasonPhrase()`.
 This method returns the reason phrase associated with the HTTP response status code.
 
 ```php
@@ -74,21 +74,21 @@ $response->getReasonPhrase();
 // return "Ok"
 ```
 
-## Method `Response::getBody()`.
+### Method `Response::getBody()`.
 This method returns the message body of the response.
 
 ```php
 $body=$response->getBody();
 ```
 
-## Method `Response::setBody(mixed $body)`.
+### Method `Response::setBody(mixed $body)`.
 This method sets the message body of the response.
 
 ```php
 $response->setBody($content);
 ```
 
-## Method `Response::json(array|object $content, Status|array $status = Status::Ok, array $headers = [])`.
+### Method `Response::json(array|object $content, Status|array $status = Status::Ok, array $headers = [])`.
 This method returns the message body in JSON format.
 
 **Parameters:**
@@ -100,7 +100,7 @@ This method returns the message body in JSON format.
 Response::json('{"message":"Hello World!"}', $status, $headers);
 ```
 
-## Method `Response::plain(string $content, Status|array $status = Status::Ok, array $headers = [])`.
+### Method `Response::plain(string $content, Status|array $status = Status::Ok, array $headers = [])`.
 This method returns the message body in plain text format.
 
 **Parameters:**
@@ -112,7 +112,7 @@ This method returns the message body in plain text format.
 Response::plain('Hello World!', $status, $headers);
 ```
 
-## Method `Response::html(string $content, Status|array $status = Status::Ok, array $headers = [])`.
+### Method `Response::html(string $content, Status|array $status = Status::Ok, array $headers = [])`.
 This method returns the message body in HTML format.
 
 **Parameters:**
@@ -124,7 +124,7 @@ This method returns the message body in HTML format.
 Response::html('<h1>Hello World!</h1>', $status, $headers);
 ```
 
-## Method `Response::xml(string $content, Status|array $status = Status::Ok, array $headers = [])`.
+### Method `Response::xml(string $content, Status|array $status = Status::Ok, array $headers = [])`.
 This method returns the message body in XML format.
 
 **Parameters:**

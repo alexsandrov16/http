@@ -12,14 +12,14 @@ $uri=new Uri();
 $uri=new Uri('http://john:xyz%2A12@example.org:8080/en/download?name=param#footer');
 ```
 
-## Returns object converted to a string
+### Returns object converted to a string
 The `__toString` magic method returns the URI converted to a string.
 ```php
 echo $uri;
 // return "http://john:xyz%2A12@example.org:8080/en/download?name=param#footer"
 ```
 
-## Returns information for object debugging.
+### Returns information for object debugging.
 The `__debugInfo` magic method returns the URI representation as an array for debugging purposes.
 ```php
 var_dump($uri);
@@ -34,7 +34,7 @@ var_dump($uri);
 ]*/
 ```
 
-## Method `Uri::setScheme(string $scheme = '')`.
+### Method `Uri::setScheme(string $scheme = '')`.
 This method is in charge of setting the URL scheme
 
 **Parameters:**
@@ -44,7 +44,7 @@ This method is in charge of setting the URL scheme
 $uri->setScheme($scheme);
 ```
 
-## Method `Uri::setUserInfo(string $user, ?string $password = NULL)`.
+### Method `Uri::setUserInfo(string $user, ?string $password = NULL)`.
 This method sets the user information in the URI to the format "user:password" if the password is provided. If the password is not provided, only the username is set.
 
 **Parameters:**
@@ -55,7 +55,7 @@ This method sets the user information in the URI to the format "user:password" i
 $uri->setUserInfo($user, $password);
 ```
 
-## Method `Uri::setHost(string $host = '')`.
+### Method `Uri::setHost(string $host = '')`.
 This method is responsible for setting the host of the URL.
 
 **Parameters:**
@@ -65,7 +65,7 @@ This method is responsible for setting the host of the URL.
 $uri->setHost($host);
 ```
 
-## Method `Uri::setPort(?int $port = NULL)`.
+### Method `Uri::setPort(?int $port = NULL)`.
 This method is responsible for setting the port of the URL. If the port is not valid, it throws an `InvalidArgumentException`.
 
 **Parameters:**
@@ -75,7 +75,7 @@ This method is responsible for setting the port of the URL. If the port is not v
 $uri->setPort($port);
 ```
 
-## Method `Uri::setPath(string $path = '/')`.
+### Method `Uri::setPath(string $path = '/')`.
 This method is responsible for setting the URL path.
 
 **Parameters:**
@@ -85,7 +85,7 @@ This method is responsible for setting the URL path.
 $uri->setPath($path);
 ```
 
-## Method `Uri::setQuery(string $query = '')`.
+# Method `Uri::setQuery(string $query = '')`.
 This method is responsible for setting the URL queries.
 
 **Parameters:**
@@ -95,7 +95,7 @@ This method is responsible for setting the URL queries.
 $uri->setQuery($query);
 ```
 
-## Method `Uri::setFragment(string $fragment = '')`.
+### Method `Uri::setFragment(string $fragment = '')`.
 This method takes care of setting the URL fragment.
 
 **Parameters:**
@@ -105,28 +105,28 @@ This method takes care of setting the URL fragment.
 $uri->setFragment($fragment);
 ```
 
-## Method `Uri::getScheme()`.
+### Method `Uri::getScheme()`.
 This method retrieves the schema component of the URI.
 ```php
 $uri->getScheme();
 // return "http"
 ```
 
-## Method `Uri::getHost()`.
+### Method `Uri::getHost()`.
 This method retrieves the host component of the URI.
 ```php
 $uri->getHost();
 // return "example.org"
 ```
 
-## Method `Uri::getAuthority()`.
+### Method `Uri::getAuthority()`.
 This method retrieves the authority component of the URI.
 
 ```php
 $uri->getAuthority();
 ```
 
-## Method `Uri::getUserInfo()`.
+### Method `Uri::getUserInfo()`.
 This method retrieves the user information component of the URI.
 
 ```php
@@ -134,7 +134,7 @@ $uri->getUserInfo();
 // return "john:xyz%2A12"
 ```
 
-## Method `Uri::getPort()`.
+### Method `Uri::getPort()`.
 This method retrieves the port component of the URI.
 
 It checks if the schema is empty and if the port is the default port for that schema. Returns the port if it is not the default port, otherwise returns null.
@@ -143,7 +143,7 @@ $uri->getPort();
 // return 8080
 ```
 
-## Method `Uri::getPath()`.
+### Method `Uri::getPath()`.
 This method retrieves the path component of the URI.
 
 ```php
@@ -151,7 +151,7 @@ $uri->getPath();
 // return "/en/download"
 ```
 
-## Method `Uri::getQuery(bool $array = false)`.
+### Method `Uri::getQuery(bool $array = false)`.
 This method retrieves the query string of the URI.
 
 **Parameters:**
@@ -165,7 +165,7 @@ $uri->getQuery(true);
 // return  ["name"=>"param"]
 ```
 
-## Method `Uri::getFragment()`.
+### Method `Uri::getFragment()`.
 This method retrieves the fragment component of the URI.
 
 ```php

@@ -4,5 +4,4 @@ index.php
 composer.lock
 
 # Fichero dentro de src/
-src/Stream.php
 src/Client.php

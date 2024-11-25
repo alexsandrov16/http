@@ -16,9 +16,6 @@ class Request
     /** @param string Metodo HTTP*/
     private string $method;
 
-    /** @param const Metodos HTTP permitidos*/
-    private const methods = ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'];
-
     /** @param Uri instancia de la clase Mk4u\Http\Uri */
     private Uri $uri;
 
@@ -105,10 +102,6 @@ class Request
      */
     public function setMethod(string $method): Request
     {
-        if (!in_array($method,self::methods)) {
-            throw new \RuntimeException(sprintf("The HTTP %s method is not supported.", $method));
-        }
-
         $this->method = strtoupper($method);
         return clone $this;
     }

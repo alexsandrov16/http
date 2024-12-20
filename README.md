@@ -23,6 +23,7 @@ For more details, please refer to the documentation:
 - [Mk4U\Http\Response.php](https://github.com/alexsandrov16/http/blob/main/docs/response.md)
 - [Mk4U\Http\Session.php](https://github.com/alexsandrov16/http/blob/main/docs/session.md)
 - [Mk4U\Http\Status.php](https://github.com/alexsandrov16/http/blob/main/docs/status.md)
+- [Mk4U\Http\Stream.php](https://github.com/alexsandrov16/http/blob/main/docs/stream.md)
 - [Mk4U\Http\UploadedFile.php](https://github.com/alexsandrov16/http/blob/main/docs/uploadedfile.md)
 - [Mk4U\Http\Uri.php](https://github.com/alexsandrov16/http/blob/main/docs/uri.md)
 

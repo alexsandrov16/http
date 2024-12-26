@@ -3,11 +3,21 @@ The `Request` class allows you to interact with the data coming into your applic
 
 ## Usage
 
-Creating a new Request object
+There are two ways to create a new Request object, you can create a request based on PHP's superglobal variables, or simply simulate a request:
+
+### Simulating a request
+When you simulate a request you must pass as parameters the http method, the uri or a [Uri](https://github.com/alexsandrov16/http/blob/main/docs/uri.md) object, the headers (optional), the request body (optional) and the protocol version (optional).
 ```php
 require __DIR__ . '/vendor/autoload.php';
 
-$request=new Mk4U\Http\Request();
+$request=new Mk4U\Http\Request($method, $uri, $headers, $body, $version);
+```
+
+### Create request based on PHP global variables.
+```php
+require __DIR__ . '/vendor/autoload.php';
+
+$request=new Mk4U\Http\Request::create();
 ```
 
 ### Returns information for object debugging.

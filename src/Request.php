@@ -33,26 +33,32 @@ class Request
     /**
      * Crea un nuevo objeto Request
      */
-    public function __construct()
-    {
+    public function __construct(
+        string $method,
+        string|Uri $uri,
+        array $headers = [],
+        $body = null,
+        string $version = '1.1'
+    ) {
         //metodo
-        $this->setMethod(self::server('request_method'));
+        $this->setMethod($method);
 
         //URI
-        $this->setUri(
-            (new Uri())
-                ->setScheme(self::server('request_scheme'))
-                ->setHost(self::server('http_host'))
-                ->setPort(self::server('server_port'))
-                ->setPath(self::server('request_uri'))
-                ->setQuery(self::server('query_string'))
-        );
+        if ($uri instanceof Uri) {
+            $setUri = $uri;
+        } else {
+            $setUri = new Uri($uri);
+        }
+        $this->setUri($setUri);
 
         //Headers
-        $this->setHeaders(getallheaders());
+        $this->setHeaders($headers);
 
         //Content
-        $this->getContent();
+        $this->content = $body;
+
+        //Vesion Http
+        $this->setProtocolVersion($version);
     }
 
     /**
@@ -67,6 +73,31 @@ class Request
             "headers" => $this->getHeaders(),
             "content" => $this->content
         ];
+    }
+
+    /**
+     * Crea un nuevo objeto Request a partir de las superglobales
+     */
+    public static function create(): static
+    {
+        //URI
+        $uri = (new Uri())
+            ->setScheme(self::server('request_scheme'))
+            ->setHost(self::server('http_host'))
+            ->setPort(self::server('server_port'))
+            ->setPath(self::server('request_uri'))
+            ->setQuery(self::server('query_string'));
+
+        $request = new static(
+            self::server('request_method'),
+            $uri,
+            getallheaders()
+        );
+
+        //Content
+        $request->getContent();
+
+        return $request;
     }
 
     /**
@@ -217,10 +248,14 @@ class Request
             return $this->params($_POST, $name, $default);
         }
 
-        if (is_null($this->output)) {
+        //Si hay contenido en la propiedad content, intentamos deserializarlo
+        if (!is_null($this->content)) {
             parse_str($this->content, $this->output);
+            return $this->params($this->output, $name, $default);
         }
-        return $this->params($this->output, $name, $default);
+
+        //Si no hay contenido, devolvemos null o el valor por defecto
+        return $default;
     }
 
     /**

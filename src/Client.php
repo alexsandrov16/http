@@ -10,11 +10,11 @@ class Client
 {
     private \CurlHandle $curl;
     private Request $request;
-    private array $methods = [
-        'get',
-        'post',
-        'put',
-        'delete',
+    private const METHODS = [
+        'GET',
+        'POST',
+        'PUT',
+        'DELETE',
         /*'HEAD',
         'OPTIONS',
         'PATCH'*/
@@ -52,10 +52,20 @@ class Client
      */
     public function request(string $method, string $uri, array $options = []): Response
     {
+        //Obtiene la peticion
         $this->request = new Request($method, $uri, $options['headers'] ?? []);
 
-        $this->setOptions(array_merge($this->optionDefault,$options));
+        //Verifica el metodo
+        if (!in_array($this->request->getMethod(), self::METHODS)) {
+            throw new \InvalidArgumentException(
+                sprintf('Http method "%s" not implemented.', $method)
+            );
+        }
 
+        //Establece las opciones
+        $this->setOptions(array_merge($this->optionDefault, $options));
+
+        //Ejecuta cURL y retorna la respuesta la respuesta
         return $this->response(\curl_exec($this->curl));
     }
 
@@ -65,22 +75,35 @@ class Client
     public function response(string|bool $response): Response
     {
         if (!$response) {
-            throw new \Error(\curl_error($this->curl), \curl_errno($this->curl));
+            throw new \Error(
+                sprintf(
+                    'cURL error #%d: %s [%s]',
+                    \curl_errno($this->curl),
+                    \curl_error($this->curl),
+                    'see https://curl.haxx.se/libcurl/c/libcurl-errors.html'
+                )
+            );
         }
 
 
-        // HTTP status code
+        // Obtiene el código de estado HTTP
         $statusCode = \curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
 
-        // Headers
-        $headerSize = \curl_getinfo($this->curl, CURLINFO_HEADER_SIZE);
-        $headers = substr($response, 0, $headerSize);
+        // Obtiene el tamaño de los encabezados
+        //$headerSize = \curl_getinfo($this->curl, CURLINFO_HEADER_SIZE);
+        // Extrae los encabezados de la respuesta
+        /* $headers = substr($response, 0, $headerSize);
 
-        //Body
-        $body = substr($response, $headerSize);
+        // Extrae el cuerpo de la respuesta
+        $body = substr($response, $headerSize);*/
 
-        // Return a new Response object with the body, headers, and status code
-        return new Response($body);
+
+        // Devuelve un nuevo objeto Response
+        return new Response(
+            $response,
+            Status::tryFrom($statusCode),
+            $this->request->getHeaders()
+        );
     }
 
     /**
@@ -88,12 +111,6 @@ class Client
      */
     public function __call($method, $arguments): Response
     {
-        if (!in_array($method, $this->methods)) {
-            throw new \InvalidArgumentException(
-                sprintf('Http method "%s" not implemented.', $method)
-            );
-        }
-
         if (empty($arguments)) {
             throw new \InvalidArgumentException("Error processing empty arguments.");
         }
@@ -104,35 +121,53 @@ class Client
     public function setOptions(array $options): void
     {
         $curlOptions = [
-            CURLOPT_URL            => $this->request->getUri(),     // Establece la URL
-            CURLOPT_HTTPHEADER     => $this->request->getHeaders(), // Cabeceras HTTP
+            // Default
             CURLOPT_RETURNTRANSFER => true,                         // Devuelve la respuesta en lugar de imprimir
-            #CURLOPT_HEADER => true, //Devuelve los encabezados
+            #CURLOPT_HEADER         => true,                         // Devuelve los encabezados
             CURLOPT_MAXREDIRS      => $options['max_redirects'],    // Limita las redirecciones a 10.
             CURLOPT_CONNECTTIMEOUT => $options['timeout'],          // Tiempo máximo para conectar.
-            CURLOPT_TIMEOUT        => $options['timeout'],          // Tiempo máximo para recibir respuesta.
-
-            CURLOPT_FOLLOWLOCATION => true,                         // Sigue las redirecciones
+            CURLOPT_TIMEOUT        => $options['timeout'],          // Tiempo máximo para recibir respuesta
             CURLOPT_HTTP_VERSION   => $options['http_version'],     // HTTP Version
+            CURLOPT_USERAGENT      => 'Mk4U',                       // Define el User-Agent
+
+            CURLOPT_FOLLOWLOCATION => true,                         // Permite seguir redirecciones.
+            CURLOPT_ENCODING       => "",                           // Maneja las codificaciones.
+            CURLOPT_AUTOREFERER    => true,                         // Establece Referer en redirecciones.
 
 
-            CURLOPT_CUSTOMREQUEST => $this->request->getMethod(),
-
-            CURLOPT_USERAGENT => 'Mk4U', // Define el User-Agent
 
 
-            CURLOPT_FOLLOWLOCATION => true,         // Permite seguir redirecciones.
-            CURLOPT_ENCODING       => "",           // Maneja automáticamente todas las codificaciones.
+            CURLOPT_URL            => $this->request->getUri(),     // Establece la URL
+            CURLOPT_HTTPHEADER     => $this->request->getHeaders(), // Cabeceras HTTP
+            CURLOPT_CUSTOMREQUEST  => $this->request->getMethod(),  // Metodo HTTP a usar
 
-            CURLOPT_AUTOREFERER    => true,         // Establece automáticamente el Referer en redirecciones.
+
 
             CURLOPT_SSL_VERIFYHOST => 0,            // No verifica el nombre del host en el certificado SSL.
             CURLOPT_SSL_VERIFYPEER => false,        // No verifica el certificado SSL.
             CURLOPT_VERBOSE        => 1               // Activa la salida detallada para depuración.
         ];
 
+        // Obtener cabecera HTTP
+        \curl_setopt(
+            $this->curl,
+            CURLOPT_HEADERFUNCTION,
+            function ($curl, $header) {
+                $len = strlen($header);
+                $header = explode(':', $header, 2);
+
+                //ignore invalid headers
+                if (count($header) < 2) return $len;
+
+                $headers[(trim($header[0]))] = trim($header[1]);
+                $this->request->setHeaders($headers);
+
+                return $len;
+            }
+        );
+
         // Establecer las opciones de cURL
-        if (curl_setopt_array($this->curl, $curlOptions) === false) {
+        if (\curl_setopt_array($this->curl, $curlOptions) === false) {
             throw new \RuntimeException("Failed to set cURL options.");
         }
     }

@@ -2,7 +2,6 @@
 
 namespace Mk4U\Http;
 
-
 /**
  * Client class
  */
@@ -15,9 +14,9 @@ class Client
         'POST',
         'PUT',
         'DELETE',
-        /*'HEAD',
-        'OPTIONS',
-        'PATCH'*/
+        'HEAD',
+        // 'OPTIONS',
+        // 'PATCH'
     ];
 
     /**
@@ -25,54 +24,48 @@ class Client
      */
     public function __construct(private array $optionDefault = [])
     {
+        // Verifica si la extensión cURL está cargada
         if (!\extension_loaded('curl')) {
-            throw new \RuntimeException('The "curl" extension is not installed.');
+            throw new \RuntimeException('The "cURL" extension is not installed.');
         }
 
-        $this->optionDefault = array_merge([
-            'timeout' => 30,
-            'max_redirects' => 10,
-            'http_version' => \CURL_HTTP_VERSION_1_1
-        ], $optionDefault);
-
-        $this->curl = \curl_init();
+        $this->optionDefault = $optionDefault;
+        $this->curl = \curl_init(); // Inicializa cURL
     }
 
     /**
-     * Cierra session Curl
+     * Cierra la sesión de cURL
      */
     public function __destruct()
     {
-        \curl_close($this->curl);
+        \curl_close($this->curl); // Cierra la sesión de cURL
         unset($this->curl);
     }
 
     /**
-     * Envia la peticion
+     * Envía la petición
      */
     public function request(string $method, string $uri, array $options = []): Response
     {
-        //Obtiene la peticion
+        // Obtiene la petición
         $this->request = new Request($method, $uri, $options['headers'] ?? []);
 
-        //Verifica el metodo
+        // Verifica el método
         if (!in_array($this->request->getMethod(), self::METHODS)) {
-            throw new \InvalidArgumentException(
-                sprintf('Http method "%s" not implemented.', $method)
-            );
+            throw new \InvalidArgumentException("Http method '$method' not implemented.");
         }
 
-        //Establece las opciones
+        // Establece las opciones
         $this->setOptions(array_merge($this->optionDefault, $options));
 
-        //Ejecuta cURL y retorna la respuesta la respuesta
+        // Ejecuta cURL y retorna la respuesta
         return $this->response(\curl_exec($this->curl));
     }
 
     /**
      * Recibe la respuesta
      */
-    public function response(string|bool $response): Response
+    private function response(string|bool $response): Response
     {
         if (!$response) {
             throw new \Error(
@@ -85,18 +78,8 @@ class Client
             );
         }
 
-
         // Obtiene el código de estado HTTP
         $statusCode = \curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
-
-        // Obtiene el tamaño de los encabezados
-        //$headerSize = \curl_getinfo($this->curl, CURLINFO_HEADER_SIZE);
-        // Extrae los encabezados de la respuesta
-        /* $headers = substr($response, 0, $headerSize);
-
-        // Extrae el cuerpo de la respuesta
-        $body = substr($response, $headerSize);*/
-
 
         // Devuelve un nuevo objeto Response
         return new Response(
@@ -107,7 +90,7 @@ class Client
     }
 
     /**
-     * Ejecuta peticiones para cada metodo especifico
+     * Ejecuta peticiones para cada método específico
      */
     public function __call($method, $arguments): Response
     {
@@ -118,50 +101,77 @@ class Client
         return $this->request($method, $arguments[0], $arguments[1] ?? []);
     }
 
-    public function setOptions(array $options): void
+    /**
+     * Establece las opciones de configuración de cURL
+     */
+    private function setOptions(array $options): void
     {
         $curlOptions = [
-            // Default
-            CURLOPT_RETURNTRANSFER => true,                         // Devuelve la respuesta en lugar de imprimir
-            #CURLOPT_HEADER         => true,                         // Devuelve los encabezados
-            CURLOPT_MAXREDIRS      => $options['max_redirects'],    // Limita las redirecciones a 10.
-            CURLOPT_CONNECTTIMEOUT => $options['timeout'],          // Tiempo máximo para conectar.
-            CURLOPT_TIMEOUT        => $options['timeout'],          // Tiempo máximo para recibir respuesta
-            CURLOPT_HTTP_VERSION   => $options['http_version'],     // HTTP Version
-            CURLOPT_USERAGENT      => 'Mk4U',                       // Define el User-Agent
-
-            CURLOPT_FOLLOWLOCATION => true,                         // Permite seguir redirecciones.
-            CURLOPT_ENCODING       => "",                           // Maneja las codificaciones.
-            CURLOPT_AUTOREFERER    => true,                         // Establece Referer en redirecciones.
-
-
-
-
-            CURLOPT_URL            => $this->request->getUri(),     // Establece la URL
-            CURLOPT_HTTPHEADER     => $this->request->getHeaders(), // Cabeceras HTTP
-            CURLOPT_CUSTOMREQUEST  => $this->request->getMethod(),  // Metodo HTTP a usar
-
-
-
-            CURLOPT_SSL_VERIFYHOST => 0,            // No verifica el nombre del host en el certificado SSL.
-            CURLOPT_SSL_VERIFYPEER => false,        // No verifica el certificado SSL.
-            CURLOPT_VERBOSE        => 1               // Activa la salida detallada para depuración.
+            // Opciones por defecto
+            \CURLOPT_RETURNTRANSFER => true, // Devuelve la respuesta en lugar de imprimir
+            \CURLOPT_MAXREDIRS      => $options['max_redirects'] ?? 10, // Limita las redirecciones a 10
+            \CURLOPT_TIMEOUT        => $options['timeout'] ?? 30, // Tiempo máximo para recibir respuesta
+            \CURLOPT_CONNECTTIMEOUT => $options['connect_timeout'] ?? 30, // Tiempo máximo para conectar
+            \CURLOPT_HTTP_VERSION   => $options['http_version'] ?? 1.1, // Versión HTTP
+            \CURLOPT_USERAGENT      => $options['user_agent'] ?? 'Mk4U/HTTP Client', // Define el User-Agent
+            \CURLOPT_ENCODING       => $options['encoding'] ?? '', // Maneja las codificaciones
+            \CURLOPT_AUTOREFERER    => $options['auto_referer'] ?? true, // Establece Referer en redirecciones
+            \CURLOPT_CUSTOMREQUEST  => $this->request->getMethod(), // Método HTTP a usar
+            \CURLOPT_FOLLOWLOCATION => true, // Permite seguir redirecciones
+            \CURLOPT_VERBOSE        => 1 // Activa la salida detallada para depuración
         ];
 
-        // Obtener cabecera HTTP
+        // Manejo del cuerpo de la solicitud
+        if ($this->request->hasMethod('post') || $this->request->hasMethod('put')) {
+            if (isset($options['form_params'])) {
+                // application/x-www-form-urlencoded
+                $curlOptions[\CURLOPT_POSTFIELDS] = http_build_query($options['form_params']);
+                $this->request->setHeader('Content-Type', 'application/x-www-form-urlencoded');
+            } elseif (isset($options['json'])) {
+                // application/json
+                $curlOptions[\CURLOPT_POSTFIELDS] = json_encode($options['json']);
+                $this->request->setHeader('Content-Type', 'application/json');
+            } elseif (isset($options['multipart'])) {
+                // multipart/form-data
+                $curlOptions[\CURLOPT_POSTFIELDS] = $options['multipart'];
+                $this->request->setHeader('Content-Type', 'multipart/form-data');
+            } elseif (isset($options['body'])) {
+                // text/plain
+                $curlOptions[\CURLOPT_POSTFIELDS] = $options['body'];
+                $this->request->setHeader('Content-Type', 'text/plain');
+            }
+        }
+        if ($this->request->hasMethod('head')) {
+            $curlopts[\CURLOPT_NOBODY] = true;
+        }
+
+        // Establecer URI
+        $this->url($options['query'] ?? []);
+
+        // Cabeceras HTTP
+        $curlOptions[\CURLOPT_HTTPHEADER]=$this->request->getHeaders();
+
+        // Certificado SSL
+        if (isset($options['verify'])) {
+            $this->ssl($options['verify']);
+        }
+
+        // Enviar certificado SSL
+        if (isset($options['cert'])) {
+            $this->cert($options['cert']);
+        }
+
+        // Obtener cabecera HTTP para la respuesta
         \curl_setopt(
             $this->curl,
-            CURLOPT_HEADERFUNCTION,
+            \CURLOPT_HEADERFUNCTION,
             function ($curl, $header) {
                 $len = strlen($header);
                 $header = explode(':', $header, 2);
-
-                //ignore invalid headers
                 if (count($header) < 2) return $len;
 
-                $headers[(trim($header[0]))] = trim($header[1]);
+                $headers[trim($header[0])] = trim($header[1]);
                 $this->request->setHeaders($headers);
-
                 return $len;
             }
         );
@@ -169,6 +179,55 @@ class Client
         // Establecer las opciones de cURL
         if (\curl_setopt_array($this->curl, $curlOptions) === false) {
             throw new \RuntimeException("Failed to set cURL options.");
+        }
+    }
+
+    /**
+     * Establece las opciones de URL
+     */
+    private function url(array $query): void
+    {
+        if (!empty($query)) {
+            // Agrega las query
+            $uri = $this->request->getUri()->setQuery(http_build_query($query));
+            \curl_setopt($this->curl, CURLOPT_URL, $uri);
+        } else {
+            // Sin query
+            \curl_setopt($this->curl, CURLOPT_URL, $this->request->getUri());
+        }
+    }
+
+    /**
+     * Establece las opciones de SSL
+     */
+    private function ssl(bool $verify): void
+    {
+        if ($verify) {
+            \curl_setopt_array($this->curl, [
+                \CURLOPT_SSL_VERIFYHOST => 2, // Verifica nombre del host y del certificado
+                \CURLOPT_SSL_VERIFYPEER => true, // Verifica el certificado SSL
+            ]);
+        } else {
+            \curl_setopt_array($this->curl, [
+                \CURLOPT_SSL_VERIFYHOST => 0, // No verifica el nombre del host
+                \CURLOPT_SSL_VERIFYPEER => false, // No verifica el certificado SSL
+            ]);
+        }
+    }
+
+    /**
+     * Establece el certificado SSL a enviar
+     */
+    private function cert(string $filename): void
+    {
+        if (!is_null($filename)) {
+            if (is_file($filename) && file_exists($filename)) {
+                curl_setopt($this->curl, \CURLOPT_CAINFO, $filename); // Ruta al archivo CA
+            } elseif (is_dir($filename) && file_exists($filename)) {
+                curl_setopt($this->curl, \CURLOPT_CAPATH, $filename); // Ruta al directorio de CA
+            } else {
+                throw new \InvalidArgumentException("Invalid certificate in $filename");
+            }
         }
     }
 }

@@ -15,8 +15,8 @@ class Client
         'PUT',
         'DELETE',
         'HEAD',
-        // 'OPTIONS',
-        // 'PATCH'
+        'OPTIONS',
+        'PATCH'
     ];
 
     /**
@@ -131,7 +131,11 @@ class Client
         ];
 
         // Manejo del cuerpo de la solicitud
-        if ($this->request->hasMethod('post') || $this->request->hasMethod('put')) {
+        if (
+            $this->request->hasMethod('post') ||
+            $this->request->hasMethod('put') ||
+            $this->request->hasMethod('patch')
+        ) {
             if (isset($options['form_params'])) {
                 // application/x-www-form-urlencoded
                 $curlOptions[\CURLOPT_POSTFIELDS] = http_build_query($options['form_params']);
@@ -150,7 +154,7 @@ class Client
                 $this->request->setHeader('Content-Type', 'text/plain');
             }
         }
-        if ($this->request->hasMethod('head')) {
+        if ($this->request->hasMethod('head')||$this->request->hasMethod('options')) {
             $curlopts[\CURLOPT_NOBODY] = true;
         }
 

@@ -81,11 +81,20 @@ class Client
         // Obtiene el código de estado HTTP
         $statusCode = \curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
 
+        // Obtiene versión del protocolo
+        $version = match (\curl_getinfo($this->curl, CURLINFO_HTTP_VERSION)) {
+            \CURL_HTTP_VERSION_1_0 => '1.0',
+            \CURL_HTTP_VERSION_1_1 => '1.1',
+            \CURL_HTTP_VERSION_2_0 => '2',
+            default => '1.1',
+        };
+
         // Devuelve un nuevo objeto Response
         return new Response(
             $response,
             Status::tryFrom($statusCode),
-            $this->request->getHeaders()
+            $this->request->getHeaders(),
+            $version
         );
     }
 
@@ -112,7 +121,7 @@ class Client
             \CURLOPT_MAXREDIRS      => $options['max_redirects'] ?? 10, // Limita las redirecciones a 10
             \CURLOPT_TIMEOUT        => $options['timeout'] ?? 30, // Tiempo máximo para recibir respuesta
             \CURLOPT_CONNECTTIMEOUT => $options['connect_timeout'] ?? 30, // Tiempo máximo para conectar
-            \CURLOPT_HTTP_VERSION   => $options['http_version'] ?? 1.1, // Versión HTTP
+            \CURLOPT_HTTP_VERSION   => $options['http_version'] ?? \CURL_HTTP_VERSION_1_1, // Versión HTTP
             \CURLOPT_USERAGENT      => $options['user_agent'] ?? 'Mk4U/HTTP Client', // Define el User-Agent
             \CURLOPT_ENCODING       => $options['encoding'] ?? '', // Maneja las codificaciones
             \CURLOPT_AUTOREFERER    => $options['auto_referer'] ?? true, // Establece Referer en redirecciones
@@ -149,7 +158,7 @@ class Client
         $this->url($options['query'] ?? []);
 
         // Cabeceras HTTP
-        $curlOptions[\CURLOPT_HTTPHEADER]=$this->request->getHeaders();
+        $curlOptions[\CURLOPT_HTTPHEADER] = $this->request->getHeaders();
 
         // Certificado SSL
         if (isset($options['verify'])) {

@@ -48,7 +48,14 @@ class Client
     public function request(string $method, string $uri, array $options = []): Response
     {
         // Obtiene la petición
-        $this->request = new Request($method, $uri, $options['headers'] ?? []);
+        $this->request = new Request(
+            $method,
+            $uri,
+            array_merge(
+                $this->optionDefault,
+                $options['headers']
+            ) ?? []
+        );
 
         // Verifica el método
         if (!in_array($this->request->getMethod(), self::METHODS)) {
@@ -154,7 +161,7 @@ class Client
                 $this->request->setHeader('Content-Type', 'text/plain');
             }
         }
-        if ($this->request->hasMethod('head')||$this->request->hasMethod('options')) {
+        if ($this->request->hasMethod('head') || $this->request->hasMethod('options')) {
             $curlopts[\CURLOPT_NOBODY] = true;
         }
 

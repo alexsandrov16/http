@@ -17,6 +17,7 @@ composer require mk4u/http
 This library provides a variety of functions to simplify the management of the input and output of your application or API. It also provides the essential tools to work efficiently with HTTP protocols.
 
 For more details, please refer to the documentation:
+- [Mk4U\Http\Client.php](https://github.com/alexsandrov16/http/blob/main/docs/client.md)
 - [Mk4U\Http\Cookie.php](https://github.com/alexsandrov16/http/blob/main/docs/cookie.md)
 - [Mk4U\Http\Headers.php](https://github.com/alexsandrov16/http/blob/main/docs/headers.md)
 - [Mk4U\Http\Request.php](https://github.com/alexsandrov16/http/blob/main/docs/request.md)

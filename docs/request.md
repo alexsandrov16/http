@@ -10,6 +10,12 @@ When you simulate a request you must pass as parameters the http method, the uri
 ```php
 require __DIR__ . '/vendor/autoload.php';
 
+$method = 'POST';
+$uri = 'http://example.com/api/resource';
+$headers = ['Content-Type' => 'application/json'];
+$body = json_encode(['key' => 'value']);
+$version = '1.1';
+
 $request=new Mk4U\Http\Request($method, $uri, $headers, $body, $version);
 ```
 
@@ -17,7 +23,7 @@ $request=new Mk4U\Http\Request($method, $uri, $headers, $body, $version);
 ```php
 require __DIR__ . '/vendor/autoload.php';
 
-$request=new Mk4U\Http\Request::create();
+$request=Mk4U\Http\Request::create();
 ```
 
 ### Returns information for object debugging.
@@ -156,7 +162,7 @@ $request->jsonData();
   ...
 ] */
 
-$request->inputData(false);
+$request->jsonData(false);
 // return object(name)
 ```
 

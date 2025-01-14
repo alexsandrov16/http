@@ -20,7 +20,7 @@ return $response->plain('Hello World!');
 // Both implementations return "Hello World!"" and the default status code is 200.
 ```
 
-Can also create responses for different types of content and status codes.
+Can also create responses for different types of content and [status codes](https://github.com/alexsandrov16/http/blob/main/docs/status.md).
 ```php
 $response=new Response();
 

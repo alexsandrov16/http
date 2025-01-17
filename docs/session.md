@@ -22,7 +22,7 @@ Session::start();
 ```
 
 ## Method `Session::set(string $name, mixed $value)`.
-This static method takes care of setting values for `$_SESSION`. If the session variable already exists, this method overwrites its value with the new value provided. This method does not return any value, as it simply sets the value of the session variable to `$_SESSION`.
+This static method is responsible for setting values for `$_SESSION`. If the session variable already exists, this method overwrites its value with the new value provided. This method does not return any value, as it simply sets the value of the session variable to `$_SESSION`. You can call this method at any time without having initialized the session, we do it for you.
 
 **Parameters**
 - $name (string): The name of the session variable to be set.

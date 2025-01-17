@@ -34,11 +34,7 @@ class Cookie
             return $_COOKIE;
         }
 
-        if (self::has($name)) {
-            return $_COOKIE[$name];
-        }
-
-        return $default;
+        return self::has($name) ? $_COOKIE[$name] : $default;
     }
 
     /**

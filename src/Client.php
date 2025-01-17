@@ -93,7 +93,7 @@ class Client
             \CURL_HTTP_VERSION_1_0 => '1.0',
             \CURL_HTTP_VERSION_1_1 => '1.1',
             \CURL_HTTP_VERSION_2_0 => '2',
-            default => '1.1',
+            default => null,
         };
 
         // Devuelve un nuevo objeto Response

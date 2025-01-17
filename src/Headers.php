@@ -10,6 +10,9 @@ trait Headers
     /** @param string version del protocolo http*/
     protected string $version = 'HTTP/1.1';
 
+    /** @param array version del protocolo http*/
+    protected const VERSIONS = ['1.0', '1.1', '2', '3'];
+
     /** @param array headers del mensaje http*/
     protected array $headers = [];
 
@@ -26,16 +29,20 @@ trait Headers
      */
     protected function setProtocolVersion(?string $version = null): static
     {
-        if (preg_match('/^[1-3|(1.1)]$/', $version)) {
-            $this->version = "HTTP/$version";
+        // Si la versión es nula, no se establece nada y se retorna la instancia actual
+        if ($version === null) {
+            return clone $this; // No se establece nada si la versión es nula 
         }
 
-        $version = strtoupper($version);
-        if (preg_match('~HTTP~', $version)) {
-            $this->version = $version;
+        // Validar que la versión sea una de las permitidas
+        if (!in_array($version, self::VERSIONS, true)) {
+            throw new \InvalidArgumentException("Invalid HTTP protocol version: $version");
         }
 
-        return clone $this;
+        // Asignar la versión
+        $this->version = "HTTP/$version";
+
+        return clone $this; // Retornar la instancia actual
     }
 
     /**

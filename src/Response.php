@@ -33,7 +33,7 @@ class Response
 
     use Headers;
 
-    public function __construct(mixed $content = "", Status|array $status = Status::Ok, array $headers = [], string $version = null)
+    public function __construct(mixed $content = "", Status|array $status = Status::Ok, array $headers = [], ?string $version = null)
     {
 
         //version protocolo
@@ -54,7 +54,7 @@ class Response
         $this->setBody($content);
     }
 
-    public function __toString():string
+    public function __toString(): string
     {
         return $this->send();
     }
@@ -101,10 +101,10 @@ class Response
      * @return static
      * @throws \InvalidArgumentException Para argumentos de código de estado no válidos.
      */
-    public function setStatus(int $code, string $reasonPhrase = ''):Response
+    public function setStatus(int $code, string $reasonPhrase = ''): Response
     {
         if ($code < 100 || $code > 599) {
-            throw new \InvalidArgumentException("Invalid status code argumentss");
+            throw new \InvalidArgumentException("Invalid status code arguments");
         }
 
         $this->code = $code;
@@ -126,7 +126,7 @@ class Response
      * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      * @return string Frase de motivo; debe devolver una cadena vacía si no hay ninguna presente.
      */
-    public function getReasonPhrase():string
+    public function getReasonPhrase(): string
     {
         return $this->phrase;
     }
@@ -165,39 +165,41 @@ class Response
     /**
      * Devuelve cuerpo del mensaje como JSON
      */
-    public static function json(array|string $content, Status|array $status = Status::Ok, array $headers = []): Response
+    public static function json(array|string $content, Status|array $status = Status::Ok, array $headers = [], ?string $version = null): Response
     {
         $headers['content-type'] = 'application/json';
         return new static(
-            is_string($content) ? $content : json_encode($content,JSON_PRETTY_PRINT),
+            is_string($content) ? $content : json_encode($content, JSON_PRETTY_PRINT),
             $status,
-            $headers);
+            $headers,
+            $version
+        );
     }
 
     /**
      * Devuelve cuerpo del mensaje como texto plano
      */
-    public static function plain(string $content, Status|array $status = Status::Ok, array $headers = []): Response
+    public static function plain(string $content, Status|array $status = Status::Ok, array $headers = [], ?string $version = null): Response
     {
         $headers['content-type'] = 'text/plain';
-        return new static($content, $status, $headers);
+        return new static($content, $status, $headers, $version);
     }
 
     /**
      * Devuelve cuerpo del mensaje como HTML
      */
-    public static function html(string $content, Status|array $status = Status::Ok, array $headers = []): Response
+    public static function html(string $content, Status|array $status = Status::Ok, array $headers = [], ?string $version = null): Response
     {
         $headers['content-type'] = 'text/html';
-        return new static($content, $status, $headers);
+        return new static($content, $status, $headers, $version);
     }
 
     /**
      * Devuelve cuerpo del mensaje como XML
      */
-    public static function xml(string $content, Status|array $status = Status::Ok, array $headers = []): Response
+    public static function xml(string $content, Status|array $status = Status::Ok, array $headers = [], ?string $version = null): Response
     {
         $headers['content-type'] = 'application/xml';
-        return new static($content, $status, $headers);
+        return new static($content, $status, $headers, $version);
     }
 }

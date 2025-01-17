@@ -38,7 +38,7 @@ class Request
         string|Uri $uri,
         array $headers = [],
         $body = null,
-        string $version = '1.1'
+        ?string $version = null
     ) {
         //metodo
         $this->setMethod($method);

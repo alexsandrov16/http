@@ -2,8 +2,6 @@
 
 namespace Mk4U\Http;
 
-use RuntimeException;
-
 /**
  * Cookie class
  */
@@ -17,7 +15,7 @@ class Cookie
         mixed $value,
         int $expires = 0,
         string $path = '/',
-        string $domain = null,
+        ?string $domain = null,
         bool $secure = false,
         bool $httponly = false
     ): bool {
@@ -36,15 +34,11 @@ class Cookie
             return $_COOKIE;
         }
 
-        if (isset($default)) {
-            return $default;
-        } else {
-            if (self::has($name) == false) {
-                throw new RuntimeException(sprintf("The cookie %s does not exist", $name));
-            }
-
+        if (self::has($name)) {
             return $_COOKIE[$name];
         }
+
+        return $default;
     }
 
     /**
@@ -58,8 +52,13 @@ class Cookie
     /**
      * Elimina una cookie
      */
-    public  static function remove(string $name): void
-    {
-        self::set($name, '', -1);
+    public  static function remove(
+        string $name,
+        string $path = '/',
+        ?string $domain = null,
+        bool $secure = false,
+        bool $httponly = false
+    ): void {
+        self::set($name, '', -1, $path, $domain, $secure, $httponly);
     }
 }

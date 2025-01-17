@@ -47,14 +47,14 @@ class Client
      */
     public function request(string $method, string $uri, array $options = []): Response
     {
+        //Obtener cabeceras
+        $headers = $options['headers'] ?? [];
+        
         // Obtiene la petición
         $this->request = new Request(
             $method,
             $uri,
-            array_merge(
-                $this->optionDefault,
-                $options['headers']
-            ) ?? []
+            array_merge($this->optionDefault, $headers)
         );
 
         // Verifica el método

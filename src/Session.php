@@ -16,7 +16,7 @@ class Session
         "cookie_domain" => "string",
         "cookie_httponly" => "boolean",
         "cookie_lifetime" => "integer",
-        "cookie_path" => "string ",
+        "cookie_path" => "string",
         "cookie_samesite" => "string",
         "cookie_secure" => "boolean",
         "gc_divisor" => "integer",
@@ -35,7 +35,7 @@ class Session
         "use_cookies" => "boolean",
         "use_only_cookies" => "boolean",
         "use_strict_mode" => "boolean",
-        "use_trans_sid " => "boolean",
+        "use_trans_sid" => "boolean",
     ];
 
     use Flash;
@@ -73,11 +73,7 @@ class Session
             return $_SESSION;
         }
 
-        if (self::has($name)) {
-            return $_SESSION[$name];
-        } else {
-            return $default;
-        }
+        return self::has($name) ? $_SESSION[$name] : $default;
     }
 
     /**
@@ -87,6 +83,10 @@ class Session
      */
     public static function set(string $name, mixed $value): void
     {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            self::start();
+        }
+
         $_SESSION[$name] = $value;
     }
 
@@ -111,7 +111,7 @@ class Session
      */
     public static function has(string $name): bool
     {
-        return key_exists($name, $_SESSION);
+        return isset($_SESSION[$name]);
     }
 
     /**
@@ -119,7 +119,7 @@ class Session
      */
     public static function renewId(): void
     {
-        session_regenerate_id();
+        session_regenerate_id(true);
     }
 
     /**
@@ -127,6 +127,9 @@ class Session
      */
     public static function destroy(): void
     {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            throw new \RuntimeException();
+        }
         session_unset();
         session_destroy();
     }
@@ -164,8 +167,9 @@ class Session
     public static function flash(string $name, mixed $value = null): ?string
     {
         if (empty($value)) {
-            return static::getflash($name);
+            return self::getFlash($name);
         }
-        return static::setflash($name, $value);
+        self::setFlash($name, $value);
+        return null;
     }
 }

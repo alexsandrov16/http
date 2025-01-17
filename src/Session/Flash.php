@@ -17,11 +17,10 @@ trait Flash
     #        ]
     #    ];
 
-    private static function setFlash(string $name, $value): null
+    private static function setFlash(string $name, $value): void
     {
         $_SESSION['_mk4u_flash']['_new'][] = $name;
         self::set($name, $value);
-        return null;
     }
 
     private static function getFlash(string $name): ?string

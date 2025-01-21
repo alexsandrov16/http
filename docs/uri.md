@@ -85,7 +85,7 @@ This method is responsible for setting the URL path.
 $uri->setPath($path);
 ```
 
-# Method `Uri::setQuery(string $query = '')`.
+### Method `Uri::setQuery(string $query = '')`.
 This method is responsible for setting the URL queries.
 
 **Parameters:**

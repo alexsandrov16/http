@@ -25,15 +25,16 @@ $client = new Mk4U\Http\Client($options);
 ```
 #### List of configuration options:
 
-- max_redirects: Maximum number of redirects to follow.
-- timeout: Maximum time in seconds to wait for a response.
-- connect_timeout: Maximum time in seconds to establish a connection.
-- http_version: HTTP version to use (for example, CURL_HTTP_VERSION_1_1 or 1.1).
-- user_agent: User agent to send in the request.
-- encoding: Encoding to use for the response.
-- auto_referer: Indicates if the Referer should be set automatically in redirections.
-- verify: Indicates if the SSL certificate should be verified.
-- cert: Path to the SSL certificate file or directory.
+- **max_redirects**: Maximum number of redirects to follow.
+- **timeout**: Maximum time in seconds to wait for a response.
+- **connect_timeout**: Maximum time in seconds to establish a connection.
+- **http_version**: HTTP version to use (for example, CURL_HTTP_VERSION_1_1 or 1.1).
+- **user_agent**: User agent to send in the request.
+- **encoding**: Encoding to use for the response.
+- **auto_referer**: Indicates if the Referer should be set automatically in redirections.
+- **verbose**: Enable verbose mode. It will print information about the connection, requests, and responses to the standard output (stdout).Imprimirá información sobre la conexión, las solicitudes y las respuestas en la salida estándar (stdout).
+- **verify**: Indicates if the SSL certificate should be verified.
+- **cert**: Path to the SSL certificate file or directory.
 
 ### Sending Requests
 The `Client` class allows you to send HTTP requests using different methods. You can use the `GET`, `POST`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`, and `PATCH` methods.

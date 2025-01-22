@@ -134,7 +134,7 @@ class Client
             \CURLOPT_AUTOREFERER    => $options['auto_referer'] ?? true, // Establece Referer en redirecciones
             \CURLOPT_CUSTOMREQUEST  => $this->request->getMethod(), // Método HTTP a usar
             \CURLOPT_FOLLOWLOCATION => true, // Permite seguir redirecciones
-            \CURLOPT_VERBOSE        => 1 // Activa la salida detallada para depuración
+            \CURLOPT_VERBOSE        => $options['verbose'] ?? false // Activa la salida detallada para depuración
         ];
 
         // Manejo del cuerpo de la solicitud
